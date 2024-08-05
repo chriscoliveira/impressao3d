@@ -11,12 +11,55 @@ from layout import Ui_MainWindow
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QPushButton,QMessageBox
 import sqlite3
 import math
+from fpdf import FPDF
 
 conn = sqlite3.connect('impressao3d.db')
 
 cursor = conn.cursor()
 
 retornoInvestimento = 1.85
+
+# Classe para criar o PDF
+class PDF(FPDF):
+    def header(self):
+        self.set_font('Arial', 'B', 15)
+        self.cell(0, 5, 'Impressão 3D - Personalizada!', 0, 1, 'C')
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 5)
+        self.cell(0, 5, f'Página {self.page_no()}', 0, 0, 'C')
+
+    def chapter_title(self, title):
+        self.set_font('Arial', 'B', 5)
+        self.cell(0, 10, title, 0, 1, 'L')
+        self.ln(10)
+
+    def chapter_body(self, body):
+        self.set_font('Arial', '', 5)
+        self.multi_cell(0, 10, body)
+        self.ln()
+
+    def add_table(self, dataframe):
+        self.set_font('Arial', 'B', 5)
+        
+        # Calcula a largura de cada coluna com base no comprimento máximo do texto
+        col_widths = []
+        for col in dataframe.columns:
+            max_length = max(dataframe[col].astype(str).map(len).max(), len(col))
+            col_widths.append(max_length * 2)  # Ajuste de multiplicador para largura da coluna
+        
+        # Cabeçalho
+        for col, width in zip(dataframe.columns, col_widths):
+            self.cell(width, 5, col, 1, 0, 'C')
+        self.ln()
+        
+        # Dados
+        self.set_font('Arial', '', 7)
+        for index, row in dataframe.iterrows():
+            for item, width in zip(row, col_widths):
+                self.cell(width, 5, str(item), 1, 0, 'C')
+            self.ln()
 
 def criabanco():
     try:
@@ -29,6 +72,7 @@ def criabanco():
                 LUCROPCT TEXT,
                 MATERIAL TEXT,
                 VALORFILKG TEXT,
+                OUTROSVALORES TEXT,
                 CUSTOPINTURA TEXT,
                 TEMPOPRODUCAO TEXT,
                 TEMPOPRODUCAOMINUTOS TEXT,
@@ -184,7 +228,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.tableWidget.setRowCount(numRows)
         self.tableWidget.setColumnCount(numCols)
-        nomeColunas = ["ID","ITEM","VALOR R$","CUSTO R$","LUCRO %","MATERIAL","KG R$","PINTURA","HORA","MINUTOS","FILAMENTO M","PESO G","ALTURA CM","PORCENTAGEM","ALTURA CAMADA","INFILL","SUPORTE","OUTROS","LINK"]
+        nomeColunas = ["ID","ITEM","VALOR R$","CUSTO R$","LUCRO %","MATERIAL","KG R$","OUTROS R$","PINTURA","HORA","MINUTOS","FILAMENTO M","PESO G","ALTURA CM","PORCENTAGEM","ALTURA CAMADA","INFILL","SUPORTE","OUTROS","LINK"]
         self.tableWidget.setHorizontalHeaderLabels(nomeColunas)
 
         for rowIndex, row in enumerate(rows):
@@ -208,7 +252,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # conn.close()
         retorno = []
         for row in rows:
-            retorno.append([row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[18]])
+            retorno.append([row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[18],row[19]])
         return retorno
         
 
@@ -246,17 +290,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.idlucro.setText(retorno[4])
             self.idMaterial.setText(retorno[5])
             self.idValorKg.setText(retorno[6])
-            self.idCustoPintura.setText(retorno[7])
-            self.idTempo.setText(retorno[8])
-            self.idFilamentom.setText(retorno[10])
-            self.lbpeso.setText(retorno[11])
-            self.idAltura.setText(retorno[12])
-            self.idTamanhopct.setText(retorno[13])
-            self.idAlturaCamada.setText(retorno[14])
-            self.idInfill.setText(retorno[15])
-            self.idSuporte.setText(retorno[16])
-            self.idOutros.setText(retorno[17])
-            self.idLink.setText(retorno[18])
+            self.edoutrosvalores.setText(retorno[7])
+            self.idCustoPintura.setText(retorno[8])
+            self.idTempo.setText(retorno[9])
+            self.idFilamentom.setText(retorno[11])
+            self.lbpeso.setText(retorno[12])
+            self.idAltura.setText(retorno[13])
+            self.idTamanhopct.setText(retorno[14])
+            self.idAlturaCamada.setText(retorno[15])
+            self.idInfill.setText(retorno[16])
+            self.idSuporte.setText(retorno[17])
+            self.idOutros.setText(retorno[18])
+            self.idLink.setText(retorno[19])
 
             # print(f'Double Click - First cell in row {row}: {first_item.text()}')
 
@@ -313,7 +358,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def buscaitemvenda(self):
         try:
             retorno = (self.listaProduto(id=int(self.ed_codprod.text())))[0]
-            id,ITEM,VALORVENDA,VALORPRODUCAO,LUCROPCT,MATERIAL,VALORFILKG,CUSTOPINTURA,TEMPOPRODUCAO,TEMPOPRODUCAOMINUTOS,FILAMENTOM,PESO,ALTURACM,TAMANHOPCT,ALTURACAMADA,INFILL,SUPORTE,OUTROS,LINK = retorno
+            id,ITEM,VALORVENDA,VALORPRODUCAO,LUCROPCT,MATERIAL,VALORFILKG,OUTROSVALORES,CUSTOPINTURA,TEMPOPRODUCAO,TEMPOPRODUCAOMINUTOS,FILAMENTOM,PESO,ALTURACM,TAMANHOPCT,ALTURACAMADA,INFILL,SUPORTE,OUTROS,LINK = retorno
         
             self.lb_nome.setText(ITEM)
             self.lbvalor.setText("%.2f" % round(float(VALORVENDA),2))
@@ -408,7 +453,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
 # atualiza
-    def atualizarProduto(self,id,item,lucro,valorkg,custopintura,tempoproducao,material,filamentom,alturacm,tamanhopct,alturacamada,infill,suporte,outros,link):
+    def atualizarProduto(self,id,item,lucro,valorkg,outrosvalores,custopintura,tempoproducao,material,filamentom,alturacm,tamanhopct,alturacamada,infill,suporte,outros,link):
         
         produtos = self.listaProduto(id=id)
         
@@ -424,9 +469,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 custoFalhas = self.calculaCustoFalhas(custoMaterial)
                 custoAcabamento = self.calculaCustoAcabamento(custoMaterial)
                 valorProducao = self.calculaValorProducao(custoMaterial,custoEnergia,custoFalhas,custoManutencao,custoAcabamento)
-                valorVenda = self.calculaValorVenda(valorProducao,lucro,custopintura)
+                valorVenda = self.calculaValorVenda(valorProducao,lucro,custopintura,outrosvalores)
                 
-                cursor.execute(f'''update PRODUTOS set item="{item}", valorvenda="{valorVenda}",valorproducao="{valorProducao}",
+                cursor.execute(f'''update PRODUTOS set item="{item}", valorvenda="{valorVenda}",valorproducao="{valorProducao}",outrosvalores="{outrosvalores}",
                             custopintura="{custopintura}",tempoproducao="{tempoproducao}",material="{material}",
                             filamentom="{filamentom}",alturacm="{alturacm}",tamanhopct="{tamanhopct}",alturacamada="{alturacamada}",
                             infill="{infill}",suporte="{suporte}",outros="{outros}",link="{link}",VALORFILKG="{valorkg}",lucropct="{lucro}",tempoproducaominutos="{tempomin}"
@@ -451,6 +496,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         suporte = self.idSuporte.text()
         outros = self.idOutros.text()
         link = self.idLink.text()
+        outrosvalores=self.edoutrosvalores.text().replace(",",".")
 
         
         # produtos = listaProduto(id)
@@ -467,7 +513,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         custoFalhas = self.calculaCustoFalhas(custoMaterial)
         custoAcabamento = self.calculaCustoAcabamento(custoMaterial)
         valorProducao = self.calculaValorProducao(custoMaterial,custoEnergia,custoFalhas,custoManutencao,custoAcabamento)
-        valorVenda = self.calculaValorVenda(valorProducao,lucro,custopintura)
+        valorVenda = self.calculaValorVenda(valorProducao,lucro,custopintura,outrosvalores)
         self.lbproducao.setText(f'{valorProducao:.2f}')
         self.lbvenda.setText(f'{valorVenda:.2f}')
         self.lbpeso.setText(f'{pesog:.2f}')
@@ -477,7 +523,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         valorProducao=f'{valorProducao:.2f}'
         # print(custopintura,valorProducao,valorVenda)
         if not self.id.text() == "":    
-            cursor.execute(f'''update PRODUTOS set item="{item}", valorvenda="{str(valorVenda)}",valorproducao="{valorProducao}",
+            cursor.execute(f'''update PRODUTOS set item="{item}", valorvenda="{str(valorVenda)}", valorproducao="{valorProducao}", outrosvalores="{outrosvalores}",
                         custopintura="{custopintura}",tempoproducao="{tempoproducao}",material="{material}",
                         filamentom="{filamentom}",alturacm="{alturacm}",tamanhopct="{tamanhopct}",alturacamada="{alturacamada}",
                         infill="{infill}",suporte="{suporte}",outros="{outros}",link="{link}",VALORFILKG="{valorkg}",lucropct="{lucro}",tempoproducaominutos="{tempomin}"
@@ -492,9 +538,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             contagem = self.listaProduto()
             contagem=int(contagem[-1][0])+1
             cursor.execute(f"""INSERT INTO PRODUTOS 
-            (ID,ITEM, VALORVENDA, VALORPRODUCAO, LUCROPCT, MATERIAL, VALORFILKG, CUSTOPINTURA, TEMPOPRODUCAO, TEMPOPRODUCAOMINUTOS, FILAMENTOM, PESO, ALTURACM, TAMANHOPCT, ALTURACAMADA, INFILL, SUPORTE, OUTROS, LINK)
+            (ID,ITEM, VALORVENDA, VALORPRODUCAO, LUCROPCT, MATERIAL, VALORFILKG,OUTROSVALORES, CUSTOPINTURA, TEMPOPRODUCAO, TEMPOPRODUCAOMINUTOS, FILAMENTOM, PESO, ALTURACM, TAMANHOPCT, ALTURACAMADA, INFILL, SUPORTE, OUTROS, LINK)
             VALUES ( '{contagem}',
-            '{item}','{valorVenda}','{valorProducao}','{lucro}','{material}','{valorkg}','{custopintura}','{tempoproducao}','{tempomin}','{filamentom}','{pesog}','{alturacm}','{tamanhopct}','{alturacamada}','{infill}','{suporte}','{outros}','{link}')""")
+            '{item}','{valorVenda}','{valorProducao}','{lucro}','{material}','{valorkg}','{outrosvalores}','{custopintura}','{tempoproducao}','{tempomin}','{filamentom}','{pesog}','{alturacm}','{tamanhopct}','{alturacamada}','{infill}','{suporte}','{outros}','{link}')""")
 
             conn.commit()
             self.enviaMensagem("Item Cadastrado")
@@ -567,11 +613,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         id = self.id.text()
         item = self.edItem.text()
         lucro=self.idlucro.text()
+        lucro=lucro.replace(",",".")
+        self.idlucro.setText(lucro)
         valorkg = self.idValorKg.text()
+        valorkg=valorkg.replace(",",".")
+        self.idValorKg.setText(valorkg)
         custopintura = self.idCustoPintura.text()
+        custopintura=custopintura.replace(",",".")
+        self.idCustoPintura.setText(custopintura)
         tempoproducao = self.idTempo.text()
         material = self.idMaterial.text()
         filamentom = self.idFilamentom.text()
+        filamentom=filamentom.replace(",",".")
+        self.idFilamentom.setText(filamentom)
         alturacm = self.idAltura.text()
         tamanhopct = self.idTamanhopct.text()
         alturacamada = self.idAlturaCamada.text()
@@ -579,7 +633,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         suporte = self.idSuporte.text()
         outros = self.idOutros.text()
         link = self.idLink.text()
-
+        outrosvalores = self.edoutrosvalores.text()
+        outrosvalores=outrosvalores.replace(",",".")
+        self.edoutrosvalores.setText(outrosvalores)
         
         # produtos = listaProduto(id)
         
@@ -595,7 +651,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         custoFalhas = self.calculaCustoFalhas(custoMaterial)
         custoAcabamento = self.calculaCustoAcabamento(custoMaterial)
         valorProducao = self.calculaValorProducao(custoMaterial,custoEnergia,custoFalhas,custoManutencao,custoAcabamento)
-        valorVenda = self.calculaValorVenda(valorProducao,lucro,custopintura)
+        valorVenda = self.calculaValorVenda(valorProducao,lucro,custopintura,outrosvalores)
         self.lbproducao.setText(str(valorProducao))
         self.lbvenda.setText(str(valorVenda))
         self.lbpeso.setText(str(pesog))
@@ -639,8 +695,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.checkpago.setCheckState(Qt.CheckState.Unchecked)
 
 #calculos para a impressao
-    def calculaValorVenda(self,valorProducao,lucro,custoPintura):
-        resultado = valorProducao+(valorProducao*(int(lucro)/100))+float(custoPintura)
+    def calculaValorVenda(self,valorProducao,lucro,custoPintura,outrosvalores):
+        resultado = valorProducao+(valorProducao*(int(lucro)/100))+float(custoPintura)+float(outrosvalores)
         
         return float(f"{resultado:.2f}")
 
@@ -758,27 +814,8 @@ Energia gasta R${energiames:.2f}""")
         self.lb_grafico.setPixmap(pixmap)
 
     def exportPDF(self):
-        from reportlab.lib.pagesizes import letter
-        from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-        from reportlab.lib import colors
-        pdf = SimpleDocTemplate("dataframe.pdf", pagesize=letter)
-
-        table_style = TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 14),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
-            ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
-            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), 12),
-            ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
-        ])
-
-        df = pd.read_sql_query("SELECT * from PRODUTOS", conn)
+        
+        df = pd.read_sql_query("SELECT id,ITEM,VALORVENDA,VALORPRODUCAO,LUCROPCT,VALORFILKG,OUTROSVALORES,CUSTOPINTURA,TEMPOPRODUCAO,FILAMENTOM from PRODUTOS", conn)
         # df['DATA'] = pd.to_datetime(df['DATA'], format='%d/%m/%Y')
         df['VALORVENDA'] = pd.to_numeric(df['VALORVENDA'])
         df['VALORPRODUCAO'] = pd.to_numeric(df['VALORPRODUCAO'])
@@ -787,11 +824,24 @@ Energia gasta R${energiames:.2f}""")
         # df['MATERIAL'] = pd.to_numeric(df['MATERIAL'])
         df.head()
 
+        dfv = pd.read_sql_query("select id,data,produto,comprador,valorvenda,valorproduto,custo,lucro,pago from venda order by pago",conn)
         # df.setStyle(table_style)
 
-        pdf_table = []
-        pdf_table.append(df)
+        # Criação do PDF
+        pdf = PDF(orientation='L')
+        pdf.add_page()
 
+        pdf.chapter_title('Lista de Produtos - Christian.C3D')
+        pdf.add_table(df)
+
+        pdf.chapter_title('Lista de Vendas - Christian.C3D')
+        pdf.add_table(dfv)
+
+        # Salvar o arquivo PDF
+        pdf_file = 'dados.pdf'
+        pdf.output(pdf_file)
+
+        print(f'Arquivo PDF salvo como {pdf_file}')
         # pdf.build(pdf_table)
 
     

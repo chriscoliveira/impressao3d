@@ -269,34 +269,33 @@
          </item>
          <item row="1" column="0">
           <layout class="QGridLayout" name="gridLayout">
-           <item row="8" column="2">
-            <widget class="QLabel" name="label_12">
+           <item row="1" column="0">
+            <widget class="QLabel" name="label">
+             <property name="font">
+              <font>
+               <italic>true</italic>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text">
-              <string>Outras infos</string>
+              <string>Peça</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>Altura cm</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QLabel" name="label_16">
+           <item row="2" column="2">
+            <widget class="QLabel" name="label_18">
              <property name="font">
               <font>
                <bold>true</bold>
               </font>
              </property>
              <property name="text">
-              <string>Valor Venda</string>
+              <string>Valor Produção</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="idMaterial">
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="idlucro">
              <property name="maximumSize">
               <size>
                <width>300</width>
@@ -305,16 +304,120 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="3">
-            <widget class="QLabel" name="lbvenda">
+           <item row="10" column="0">
+            <widget class="QPushButton" name="btGrava">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="font">
               <font>
-               <pointsize>12</pointsize>
+               <pointsize>16</pointsize>
                <bold>true</bold>
               </font>
              </property>
              <property name="text">
-              <string>R$0.00</string>
+              <string>Gravar</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="2">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Tamanho %</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="2">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Infill %</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="3">
+            <widget class="QLineEdit" name="idLink">
+             <property name="maximumSize">
+              <size>
+               <width>400</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="2">
+            <widget class="QLabel" name="label_32">
+             <property name="text">
+              <string>Link</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="1">
+            <widget class="QLineEdit" name="idSuporte">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="edItem">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="0">
+            <widget class="QLabel" name="id">
+             <property name="minimumSize">
+              <size>
+               <width>10</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_13">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Outros Valores</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="idFilamentom">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QLabel" name="label_17">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Peso g</string>
              </property>
             </widget>
            </item>
@@ -331,69 +434,35 @@
              </property>
             </widget>
            </item>
-           <item row="9" column="1" colspan="3">
-            <widget class="QLineEdit" name="idLink">
+           <item row="10" column="1">
+            <widget class="QPushButton" name="btCalcula">
              <property name="maximumSize">
               <size>
-               <width>400</width>
+               <width>300</width>
                <height>16777215</height>
               </size>
              </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QLabel" name="label_18">
              <property name="font">
               <font>
+               <pointsize>16</pointsize>
                <bold>true</bold>
               </font>
              </property>
              <property name="text">
-              <string>Valor Produção</string>
+              <string>Calcular</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="edItem">
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="font">
+              <font>
+               <italic>true</italic>
+               <bold>true</bold>
+              </font>
              </property>
-            </widget>
-           </item>
-           <item row="9" column="0">
-            <widget class="QLabel" name="label_13">
              <property name="text">
-              <string>Link</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QLineEdit" name="idCustoPintura">
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="3">
-            <widget class="QLineEdit" name="idInfill">
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>Suporte</string>
+              <string>Filamento usado</string>
              </property>
             </widget>
            </item>
@@ -420,39 +489,45 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="2">
-            <widget class="QLabel" name="label_17">
-             <property name="font">
-              <font>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Peso g</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="font">
-              <font>
-               <italic>true</italic>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Filamento usado</string>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="0">
-            <widget class="QPushButton" name="btGrava">
+           <item row="6" column="3">
+            <widget class="QLineEdit" name="idTamanhopct">
              <property name="maximumSize">
               <size>
                <width>300</width>
                <height>16777215</height>
               </size>
              </property>
+            </widget>
+           </item>
+           <item row="5" column="3">
+            <widget class="QLineEdit" name="idTempo">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="1">
+            <widget class="QLineEdit" name="idAlturaCamada">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Altura cm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="3">
+            <widget class="QPushButton" name="br_deletar">
              <property name="font">
               <font>
                <pointsize>16</pointsize>
@@ -460,12 +535,38 @@
               </font>
              </property>
              <property name="text">
-              <string>Gravar</string>
+              <string>Deletar</string>
              </property>
             </widget>
            </item>
-           <item row="8" column="1">
-            <widget class="QLineEdit" name="idSuporte">
+           <item row="4" column="3">
+            <widget class="QLabel" name="lbpeso">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="font">
+              <font>
+               <italic>true</italic>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Material</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="3">
+            <widget class="QLineEdit" name="idInfill">
              <property name="maximumSize">
               <size>
                <width>300</width>
@@ -474,21 +575,8 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label">
-             <property name="font">
-              <font>
-               <italic>true</italic>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Peça</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="idFilamentom">
+           <item row="8" column="3">
+            <widget class="QLineEdit" name="idOutros">
              <property name="maximumSize">
               <size>
                <width>300</width>
@@ -510,89 +598,6 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="3">
-            <widget class="QLineEdit" name="idTempo">
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="idlucro">
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="1">
-            <widget class="QLineEdit" name="idAlturaCamada">
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="12" column="0">
-            <widget class="QLabel" name="id">
-             <property name="minimumSize">
-              <size>
-               <width>10</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="QLineEdit" name="idAltura">
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="3">
-            <widget class="QLineEdit" name="idTamanhopct">
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="0">
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>Altura camada</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="3">
-            <widget class="QLabel" name="lbpeso">
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>0</string>
-             </property>
-            </widget>
-           </item>
            <item row="3" column="2">
             <widget class="QLabel" name="label_3">
              <property name="font">
@@ -606,85 +611,25 @@
              </property>
             </widget>
            </item>
-           <item row="8" column="3">
-            <widget class="QLineEdit" name="idOutros">
+           <item row="1" column="2">
+            <widget class="QLabel" name="label_16">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Valor Venda</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QLineEdit" name="idCustoPintura">
              <property name="maximumSize">
               <size>
                <width>300</width>
                <height>16777215</height>
               </size>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_15">
-             <property name="font">
-              <font>
-               <italic>true</italic>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Lucro</string>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="2">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Infill %</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="font">
-              <font>
-               <italic>true</italic>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Material</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="2">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>Tamanho %</string>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="1">
-            <widget class="QPushButton" name="btCalcula">
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>16</pointsize>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Calcular</string>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="3">
-            <widget class="QPushButton" name="br_deletar">
-             <property name="font">
-              <font>
-               <pointsize>16</pointsize>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Deletar</string>
              </property>
             </widget>
            </item>
@@ -704,6 +649,70 @@
              </property>
              <property name="text">
               <string>Limpar</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="0">
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>Altura camada</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_15">
+             <property name="font">
+              <font>
+               <italic>true</italic>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Lucro</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QLineEdit" name="idAltura">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="2">
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>Outras infos</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="idMaterial">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>Suporte</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QLineEdit" name="edoutrosvalores"/>
+           </item>
+           <item row="1" column="3">
+            <widget class="QLabel" name="lbvenda">
+             <property name="text">
+              <string>TextLabel</string>
              </property>
             </widget>
            </item>
@@ -1301,12 +1310,13 @@
   <tabstop>idFilamentom</tabstop>
   <tabstop>idCustoPintura</tabstop>
   <tabstop>idTempo</tabstop>
-  <tabstop>idAltura</tabstop>
+  <tabstop>edoutrosvalores</tabstop>
   <tabstop>idTamanhopct</tabstop>
-  <tabstop>idAlturaCamada</tabstop>
+  <tabstop>idAltura</tabstop>
   <tabstop>idInfill</tabstop>
-  <tabstop>idSuporte</tabstop>
+  <tabstop>idAlturaCamada</tabstop>
   <tabstop>idOutros</tabstop>
+  <tabstop>idSuporte</tabstop>
   <tabstop>idLink</tabstop>
   <tabstop>btGrava</tabstop>
   <tabstop>btCalcula</tabstop>
@@ -1315,9 +1325,9 @@
   <tabstop>ed_codprod</tabstop>
   <tabstop>bt_buscaprod</tabstop>
   <tabstop>edvenda</tabstop>
+  <tabstop>checkpago</tabstop>
   <tabstop>edcomprador</tabstop>
   <tabstop>edobs</tabstop>
-  <tabstop>checkpago</tabstop>
   <tabstop>btgravavenda</tabstop>
   <tabstop>br_deletar2</tabstop>
   <tabstop>rbtodos</tabstop>
@@ -1325,12 +1335,13 @@
   <tabstop>rbnaopago</tabstop>
   <tabstop>tableWidget_vendido</tabstop>
   <tabstop>ed_pesquisa</tabstop>
-  <tabstop>tableWidget</tabstop>
   <tabstop>bt_pesquisa</tabstop>
-  <tabstop>bt_listarvendas</tabstop>
-  <tabstop>btVendas</tabstop>
-  <tabstop>btLista</tabstop>
+  <tabstop>tableWidget</tabstop>
+  <tabstop>bt_home</tabstop>
   <tabstop>btCalculadora</tabstop>
+  <tabstop>btLista</tabstop>
+  <tabstop>btVendas</tabstop>
+  <tabstop>bt_listarvendas</tabstop>
  </tabstops>
  <resources/>
  <connections/>
