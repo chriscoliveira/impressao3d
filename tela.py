@@ -342,7 +342,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.edobs.setText(retorno[12])
             
             retorno = (self.listaProduto(id=int(self.ed_codprod.text())))[0]
-            id,ITEM,VALORVENDA,VALORPRODUCAO,LUCROPCT,MATERIAL,VALORFILKG,CUSTOPINTURA,TEMPOPRODUCAO,TEMPOPRODUCAOMINUTOS,FILAMENTOM,PESO,ALTURACM,TAMANHOPCT,ALTURACAMADA,INFILL,SUPORTE,OUTROS,LINK = retorno
+            id,ITEM,VALORVENDA,VALORPRODUCAO,LUCROPCT,MATERIAL,VALORFILKG,OUTROSVALORES,CUSTOPINTURA,TEMPOPRODUCAO,TEMPOPRODUCAOMINUTOS,FILAMENTOM,PESO,ALTURACM,TAMANHOPCT,ALTURACAMADA,INFILL,SUPORTE,OUTROS,LINK = retorno
             self.lbtempo.setText(TEMPOPRODUCAOMINUTOS)
 
             # print(f'Double Click - First cell in row {row}: {first_item.text()}')
@@ -461,7 +461,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if id:
                 if custopintura =="":
                     custopintura=0
-                pesog = self.calculaPeso(float(filamentom))
+                pesog = self.calculaPeso(float(filamentom),tipo=self.idMaterial.text())
                 tempomin = self.converteHoraEmMinutos(tempoproducao)
                 custoMaterial = self.calculaCustoMaterial(float(valorkg),pesog)
                 custoEnergia = self.calculaCustoEnergia(1,tempomin)
@@ -505,7 +505,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #     if id:
         if custopintura =="":
             custopintura=0
-        pesog = self.calculaPeso(float(filamentom))
+        pesog = self.calculaPeso(float(filamentom),tipo=self.idMaterial.text())
         tempomin = self.converteHoraEmMinutos(tempoproducao)
         custoMaterial = self.calculaCustoMaterial(float(valorkg),pesog)
         custoEnergia = self.calculaCustoEnergia(1,tempomin)
@@ -584,6 +584,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             comprador = self.edcomprador.text()
             obs = self.edobs.text()
             id_=self.lb_idVenda.text()
+            print(int(self.lbtempo.text()))
             energia = self.calculaCustoEnergia(1,int(self.lbtempo.text()))
             if self.checkpago.isChecked(): 
                 pago = "sim"
@@ -643,7 +644,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #     if id:
         if custopintura =="":
             custopintura=0
-        pesog = self.calculaPeso(float(filamentom))
+        pesog = self.calculaPeso(float(filamentom),tipo=self.idMaterial.text())
         tempomin = self.converteHoraEmMinutos(tempoproducao)
         custoMaterial = self.calculaCustoMaterial(float(valorkg),pesog)
         custoEnergia = self.calculaCustoEnergia(1,tempomin)
@@ -700,8 +701,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         return float(f"{resultado:.2f}")
 
-    def calculaPeso(self,metros,diametro=1.75):
-        resultado = metros * 1.24 * (math.pi * ((diametro / 2) ** 2))
+    def calculaPeso(self,metros,tipo,diametro=1.75):
+        if 'PLA' in str(tipo).upper():
+            valor = 1.24
+        elif 'ABS' in str(tipo).upper():
+            valor=1.04
+        else:
+            valor = 1.24
+        resultado = metros * valor * (math.pi * ((diametro / 2) ** 2))
 
         return float("%.2f" % round(resultado,2))
 
@@ -742,6 +749,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 # home
     def exibeResumo(self):
+        self.lb_grafico.clear()
         data_ = self.data(separado=True)
         data_inicio = f'{data_[2]}-{data_[1]}-01'
         ultimodia = calendar.monthrange(data_[0],data_[1])
